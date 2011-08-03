@@ -46,9 +46,9 @@ suite() ->
 %% @end
 %%------------------------------------------------------------------------------
 -spec init_per_suite(Config0::config()) ->
-           Config1::config()     | 
-           {skip,Reason::term()} | 
-           {skip_and_save,Reason::term(),Config1::term()}.
+              Config1::config()     
+            | {skip, Reason::term()} 
+            | {skip_and_save, Reason::term(), Config1::term()}.
 
 init_per_suite(Config) ->
     Config.
@@ -57,7 +57,9 @@ init_per_suite(Config) ->
 %% @doc Cleanup after the suite
 %% @end
 %%------------------------------------------------------------------------------
-end_per_suite(Config0::config()) -> void() | {save_config,Config1::config()}.
+-spec end_per_suite(Config0::config()) -> 
+            no_return() %% void()  
+          | {save_config, Config1::config()}.
 
 end_per_suite(_Config) ->
     ok.
@@ -70,10 +72,10 @@ end_per_suite(_Config) ->
 %% @end
 %%------------------------------------------------------------------------------
 
-init_per_group(GroupName::atom(), Config0::config()) ->
-                Config1::config()       | 
-                {skip,Reason::term()}   | 
-                {skip_and_save,Reason::term(),Config1::config()}.
+-spec init_per_group(GroupName::atom(), Config0::config()) ->
+              Config1::config()       
+            | {skip, Reason::term()}
+            | {skip_and_save, Reason::term(), Config1::config()}.
 
 init_per_group(_GroupName, Config) ->
     Config.
@@ -87,8 +89,8 @@ init_per_group(_GroupName, Config) ->
 %%------------------------------------------------------------------------------
 
 -spec end_per_group(GroupName::atom(), Config0::config()) ->
-           void() 
-        | {save_config, Config1::config()} .
+              no_return() %% void() 
+            | {save_config, Config1::config()} .
 
 end_per_group(_GroupName, _Config) ->
     ok.
@@ -123,7 +125,7 @@ init_per_testcase(_TestCase, Config) ->
 %%------------------------------------------------------------------------------
 
 -spec end_per_testcase(TestCase::atom(), Config0::config()) ->
-               void() 
+               no_return() 
              | {save_config, Config1::config()} 
              | {fail, Reason::term()} .
 
@@ -135,17 +137,20 @@ end_per_testcase(_TestCase, _Config) ->
 %% @end
 %%------------------------------------------------------------------------------
 
--type shuffle   :: shuffle | {shuffle, Seed::seed()}.
--type seed      :: {integer(),integer(),integer()}.
--type repeatType::  repeat 
-                  | repeat_until_all_ok 
-                  | repeat_until_all_fail 
-                  | repeat_until_any_ok 
-                  | repeat_until_any_fail .
-
--type group_properties()   :: [parallel | sequence | shuffle() | {repeatType(), integer()|forever}].
--type groupsAndTestCases() :: [group() | {group,GroupName::atom()} | TestCase::atom()].
--type group()              :: {GroupName::atom(), Properties::group_properties(), GroupsAndTestCases::groupsAndTestCases()}.
+-type shuffle()   :: shuffle | {shuffle, Seed::seed()}.
+-type seed()      :: {integer(),integer(),integer()}.
+-type repeat_type()::    repeat 
+                      | repeat_until_all_ok 
+                      | repeat_until_all_fail 
+                      | repeat_until_any_ok 
+                      | repeat_until_any_fail .
+-type group_properties() :: [parallel | sequence | shuffle() | {repeat_type(), integer()|forever}] .
+-type groups_and_test_cases()   :: [group() | {group,atom()} | atom()] .
+-type group() :: {
+                    GroupName           :: atom(), 
+                    Properties          :: group_properties(), 
+                    GroupsAndTestcases  :: groups_and_test_cases() 
+                 } .
 
 -spec  groups() -> [group()].
 groups() ->
@@ -160,11 +165,10 @@ groups() ->
 %% Reason - The reason for skipping all groups and test cases.
 %% @end
 %%------------------------------------------------------------------------------
+-spec all() -> 
+            [{group, atom()} | atom()] 
+          | {skip, Reason::term()} .
 
--type groupsAndTestCases() :: 
-
--spec all() -> [{group,GroupName::atom()} | TestCase::atom()] | 
-               {skip, Reason::term()} .
 all() -> 
     [test1].
 
@@ -197,7 +201,7 @@ test1() ->
 %%--------------------------------------------------------------------
 -spec test1(Config0::config()) ->
                 ok 
-              | exit()
+              | no_return() %% exit()
               | {skip, Reason::term()} 
               | {comment, Comment::term()} 
               | {save_config, Config1::config()} 
