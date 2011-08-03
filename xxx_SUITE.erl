@@ -58,7 +58,7 @@ init_per_suite(Config) ->
 %% @end
 %%------------------------------------------------------------------------------
 -spec end_per_suite(Config0::config()) -> 
-            no_return() %% void()  
+            no_return()
           | {save_config, Config1::config()}.
 
 end_per_suite(_Config) ->
@@ -71,7 +71,6 @@ end_per_suite(_Config) ->
 %% Reason - The reason for skipping all test cases and subgroups in the group.
 %% @end
 %%------------------------------------------------------------------------------
-
 -spec init_per_group(GroupName::atom(), Config0::config()) ->
               Config1::config()       
             | {skip, Reason::term()}
@@ -87,9 +86,8 @@ init_per_group(_GroupName, Config) ->
 %% Config0, Config1 - a list of key/value pairs, holding configuration data for the group.
 %% @end
 %%------------------------------------------------------------------------------
-
 -spec end_per_group(GroupName::atom(), Config0::config()) ->
-              no_return() %% void() 
+              no_return()
             | {save_config, Config1::config()} .
 
 end_per_group(_GroupName, _Config) ->
@@ -106,7 +104,6 @@ end_per_group(_GroupName, _Config) ->
 %% variable, but should NOT alter/remove any existing entries.
 %% @end
 %%------------------------------------------------------------------------------
-
 -spec init_per_testcase(TestCase::atom(), Config0::config()) ->
               Config1::config() 
             | {skip, Reason::term()} 
@@ -123,7 +120,6 @@ init_per_testcase(_TestCase, Config) ->
 %% Reason - the reason for failing the test case.
 %% @end
 %%------------------------------------------------------------------------------
-
 -spec end_per_testcase(TestCase::atom(), Config0::config()) ->
                no_return() 
              | {save_config, Config1::config()} 
@@ -136,7 +132,6 @@ end_per_testcase(_TestCase, _Config) ->
 %% @doc Returns a list of test case group definitions.
 %% @end
 %%------------------------------------------------------------------------------
-
 -type shuffle()   :: shuffle | {shuffle, Seed::seed()}.
 -type seed()      :: {integer(),integer(),integer()}.
 -type repeat_type()::    repeat 
@@ -151,8 +146,8 @@ end_per_testcase(_TestCase, _Config) ->
                     Properties          :: group_properties(), 
                     GroupsAndTestcases  :: groups_and_test_cases() 
                  } .
-
 -spec  groups() -> [group()].
+
 groups() ->
     [].
 
@@ -201,7 +196,7 @@ test1() ->
 %%--------------------------------------------------------------------
 -spec test1(Config0::config()) ->
                 ok 
-              | no_return() %% exit()
+              | no_return()
               | {skip, Reason::term()} 
               | {comment, Comment::term()} 
               | {save_config, Config1::config()} 
